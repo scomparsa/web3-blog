@@ -1,9 +1,9 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -104,4 +104,33 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.EasyMDEContainer .editor-toolbar {
+  border: none;
+}
+
+.EasyMDEContainer .CodeMirror {
+  border: none !important;
+  background: none;
+}
+
+.editor-preview {
+  background-color: white !important;
+}
+
+.CodeMirror
+  .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+  background-color: transparent !important;
+}
+
+pre {
+  padding: 20px;
+  background-color: #efefef;
+}
+
+blockquote {
+  border-left: 5px solid #ddd;
+  padding-left: 20px;
+  margin-left: 0px;
 }
