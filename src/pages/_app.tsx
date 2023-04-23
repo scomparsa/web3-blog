@@ -1,13 +1,13 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Inter } from '@next/font/google'
-import { useState } from 'react'
+import { Inter } from 'next/font/google'
 import { css } from '@emotion/css'
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal, Web3Button } from '@web3modal/react'
-import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { configureChains, createClient, WagmiConfig, useAccount } from 'wagmi'
 import { localhost } from 'wagmi/chains'
+import { useMounted } from '../hooks/use-mounted'
 import { AccountContext } from '../context'
 import { ownerAddress } from '../config'
 import '@/styles/globals.css'
@@ -81,7 +81,8 @@ const link = css`
 `
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [account, setAccount] = useState<string | null>(null)
+  const isMounted = useMounted()
+  const { address: account } = useAccount()
 
   return (
     <main className={inter.className}>
@@ -101,22 +102,15 @@ export default function App({ Component, pageProps }: AppProps) {
                 <p className={description}>WEB3</p>
               </div>
             </Link>
-            {account
-              ? <p className={accountInfo}>{account}</p>
-              : (
-                <div className={buttonContainer}>
-                  <Web3Button />
-                </div>
-              )
-            }
+            <div className={buttonContainer}>
+              <Web3Button />
+            </div>
           </div>
           <div className={linkContainer}>
             <Link href="/" className={link}>Home</Link>
-            {account === ownerAddress && (
-              <Link href="/create-post" className={link}>
-                Create Post
-              </Link>
-            )}
+            {isMounted && account === ownerAddress && <Link href="/create-post" className={link}>
+              Create Post
+            </Link>}
           </div>
         </nav>
         <div className={container}>

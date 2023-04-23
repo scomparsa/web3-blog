@@ -1,3 +1,3 @@
 import { createContext } from 'react'
 
-export const AccountContext = createContext<string | null>(null)
+export const AccountContext = createContext<`0x${string}` | undefined>(undefined)
