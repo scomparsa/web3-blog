@@ -1,5 +1,7 @@
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import Link from 'next/link'
+import { Inter } from '@next/font/google'
 import { useState } from 'react'
 import { css } from '@emotion/css'
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
@@ -10,6 +12,7 @@ import { AccountContext } from '../context'
 import { ownerAddress } from '../config'
 import '@/styles/globals.css'
 
+const inter = Inter({ subsets: ['latin'] })
 const chains = [localhost]
 const { provider } = configureChains(chains, [w3mProvider({ projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string })])
 const wagmiClient = createClient({
@@ -81,42 +84,48 @@ export default function App({ Component, pageProps }: AppProps) {
   const [account, setAccount] = useState<string | null>(null)
 
   return (
-    <WagmiConfig client={wagmiClient}>
-      <nav className={nav}>
-        <div className={header}>
-          <Link href="/">
-            <img src="/logo.svg" alt="logo" style={{ width: 50 }} />
-          </Link>
-          <Link href="/">
-            <div className={titleContainer}>
-              <h2 className={title}>Full Stack</h2>
-              <p className={description}>WEB3</p>
-            </div>
-          </Link>
-          {account
-            ? <p className={accountInfo}>{account}</p>
-            : (
-              <div className={buttonContainer}>
-                <Web3Button />
-              </div>
-            )
-          }
-        </div>
-        <div className={linkContainer}>
-          <Link href="/" className={link}>Home</Link>
-          {account === ownerAddress && (
-            <Link href="/create-post" className={link}>
-              Create Post
+    <main className={inter.className}>
+      <Head>
+        <title>Web3 Blog</title>
+        <link rel="icon" href="/logo.svg" sizes="any" type="image/svg+xml"></link>
+      </Head>
+      <WagmiConfig client={wagmiClient}>
+        <nav className={nav}>
+          <div className={header}>
+            <Link href="/">
+              <img src="/logo.svg" alt="logo" style={{ width: 50 }} />
             </Link>
-          )}
+            <Link href="/">
+              <div className={titleContainer}>
+                <h2 className={title}>Full Stack</h2>
+                <p className={description}>WEB3</p>
+              </div>
+            </Link>
+            {account
+              ? <p className={accountInfo}>{account}</p>
+              : (
+                <div className={buttonContainer}>
+                  <Web3Button />
+                </div>
+              )
+            }
+          </div>
+          <div className={linkContainer}>
+            <Link href="/" className={link}>Home</Link>
+            {account === ownerAddress && (
+              <Link href="/create-post" className={link}>
+                Create Post
+              </Link>
+            )}
+          </div>
+        </nav>
+        <div className={container}>
+          <AccountContext.Provider value={account}>
+            <Component {...pageProps} />
+          </AccountContext.Provider>
         </div>
-      </nav>
-      <div className={container}>
-        <AccountContext.Provider value={account}>
-          <Component {...pageProps} />
-        </AccountContext.Provider>
-      </div>
-      <Web3Modal projectId={process.env.NEXT_PUBLIC_PROJECT_ID as string} ethereumClient={ethereumClient} />
-    </WagmiConfig>
+        <Web3Modal projectId={process.env.NEXT_PUBLIC_PROJECT_ID as string} ethereumClient={ethereumClient} />
+      </WagmiConfig>
+    </main>
   )
 }
