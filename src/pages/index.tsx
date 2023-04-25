@@ -121,7 +121,7 @@ export async function getServerSideProps() {
   }
 
   const contract = new ethers.Contract(contractAddress, Blog.abi, provider)
-  const data = await contract.fetchPosts()
+  const data = [] // await contract.fetchPosts()
 
   return {
     props: {

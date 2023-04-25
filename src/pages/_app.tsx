@@ -12,16 +12,6 @@ import { AccountContext } from '../context'
 import { ownerAddress } from '../config'
 import '@/styles/globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
-const chains = [localhost]
-const { provider } = configureChains(chains, [w3mProvider({ projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string })])
-const wagmiClient = createClient({
-  provider,
-  autoConnect: true,
-  connectors: w3mConnectors({ chains, version: 1, projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string })
-})
-const ethereumClient = new EthereumClient(wagmiClient, chains)
-
 const container = css`
   padding: 40px;
 `
@@ -79,6 +69,16 @@ const link = css`
   font-size: 16px;
   font-weight: 400;
 `
+
+const inter = Inter({ subsets: ['latin'] })
+const chains = [localhost]
+const { provider } = configureChains(chains, [w3mProvider({ projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string })])
+const wagmiClient = createClient({
+  provider,
+  autoConnect: true,
+  connectors: w3mConnectors({ chains, version: 1, projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string })
+})
+const ethereumClient = new EthereumClient(wagmiClient, chains)
 
 export default function App({ Component, pageProps }: AppProps) {
   const isMounted = useMounted()
